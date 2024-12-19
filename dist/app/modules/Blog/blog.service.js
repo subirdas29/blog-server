@@ -9,17 +9,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserServices = void 0;
-const user_model_1 = require("./user.model");
-const createUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_model_1.User.create(payload);
+exports.BlogServices = void 0;
+const blog_model_1 = require("./blog.model");
+const createBlog = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield blog_model_1.Blog.create(payload);
     return result;
 });
-const getAllUser = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_model_1.User.find();
+const getAllBlog = () => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield blog_model_1.Blog.find().populate('author');
     return result;
 });
-exports.UserServices = {
-    createUser,
-    getAllUser,
+exports.BlogServices = {
+    createBlog,
+    getAllBlog
 };

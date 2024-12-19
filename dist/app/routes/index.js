@@ -1,12 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const user_route_1 = require("../modules/User/user.route");
+// import { UserRoutes } from '../modules/User/user.route';
+const blog_route_1 = require("../modules/Blog/blog.route");
+const auth_route_1 = require("../modules/Auth/auth.route");
 const router = (0, express_1.Router)();
 const moduleRoutes = [
     {
         path: '/auth',
-        route: user_route_1.UserRoutes,
+        route: auth_route_1.AuthRoutes,
+    },
+    {
+        path: '/blogs',
+        route: blog_route_1.BlogRoutes,
     },
 ];
 moduleRoutes.forEach((route) => router.use(route.path, route.route));

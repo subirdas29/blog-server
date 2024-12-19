@@ -12,30 +12,39 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserController = void 0;
+exports.AuthControllers = void 0;
 const http_status_1 = __importDefault(require("http-status"));
+const config_1 = __importDefault(require("../../config"));
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
-const user_service_1 = require("./user.service");
-const createUserController = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_service_1.UserServices.createUser(req.body);
+const auth_service_1 = require("./auth.service");
+const loginUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield auth_service_1.AuthServices.loginUser(req.body);
+    const { refreshToken, accessToken } = result;
+    res.cookie('refreshToken', refreshToken, {
+        secure: config_1.default.NODE_ENV === "production",
+        httpOnly: true
+    });
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: 'User is created successfully',
-        data: result,
+        message: "User is logged in successfully",
+        data: {
+            accessToken
+        }
     });
 }));
-const getAllUserController = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_service_1.UserServices.getAllUser();
+const refreshToken = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { refreshToken } = req.cookies;
+    const result = yield auth_service_1.AuthServices.refreshToken(refreshToken);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: 'User is created successfully',
-        data: result,
+        message: 'Access Token is retrieved successfully!',
+        data: result
     });
 }));
-exports.UserController = {
-    createUserController,
-    getAllUserController,
+exports.AuthControllers = {
+    loginUser,
+    refreshToken
 };

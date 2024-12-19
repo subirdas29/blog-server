@@ -12,30 +12,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserController = void 0;
+exports.BlogController = void 0;
 const http_status_1 = __importDefault(require("http-status"));
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
-const user_service_1 = require("./user.service");
-const createUserController = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_service_1.UserServices.createUser(req.body);
+const blog_service_1 = require("./blog.service");
+const createBlogController = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield blog_service_1.BlogServices.createBlog(req.body);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: 'User is created successfully',
+        message: 'Blog is created successfully',
         data: result,
     });
 }));
-const getAllUserController = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_service_1.UserServices.getAllUser();
+const getAllBlogController = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield blog_service_1.BlogServices.getAllBlog();
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: 'User is created successfully',
+        message: 'Blog is retrieved successfully',
         data: result,
     });
 }));
-exports.UserController = {
-    createUserController,
-    getAllUserController,
+exports.BlogController = {
+    createBlogController,
+    getAllBlogController
 };
