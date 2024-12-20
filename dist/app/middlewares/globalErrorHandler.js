@@ -11,7 +11,7 @@ const handleCastError_1 = __importDefault(require("../errors/handleCastError"));
 const handleDuplicateError_1 = __importDefault(require("../errors/handleDuplicateError"));
 const AppError_1 = __importDefault(require("../errors/AppError"));
 const globalErrorHandler = (err, req, res, next) => {
-    let statusCode = 500;
+    let statusCode = 400;
     let message = 'Something went wrong!';
     let error = [
         {

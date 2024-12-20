@@ -10,7 +10,7 @@ import handleDuplicateError from '../errors/handleDuplicateError';
 import AppError from '../errors/AppError';
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
-  let statusCode = 500;
+  let statusCode = 400;
   let message = 'Something went wrong!';
 
   let error: TErrorSources = [
