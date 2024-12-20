@@ -5,6 +5,7 @@ import { User } from './user.model';
 import config from '../../config';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { createToken } from './user.utils';
+import { Blog } from '../Blog/blog.model';
 
 const registerUser = async (payload: TUser) => {
   const result = await User.create(payload);
@@ -58,14 +59,12 @@ const decoded = jwt.verify(token,config.jwt_refresh_secret as string) as JwtPayl
 
 const {email} = decoded
 
-const user = await User.findOne({email});
+const user = await User.isUserExist(email);
     
 
 if (!user) {
   throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
 }
-
-
 
 const isUserBlocked = user?.isBlocked
 if(isUserBlocked === true){
@@ -86,9 +85,42 @@ const jwtPayload  = {
 }
 
 
+const blockUserByAdmin = async(id:string) =>{
+
+  const user = await User.findById(id)
+
+  if(!user){
+    throw new AppError(httpStatus.NOT_FOUND,"User not found!")
+  }
+
+  if(user.isBlocked === true){
+    throw new AppError(httpStatus.BAD_REQUEST,"This user is already blocked!")
+  }
+  
+  const result = await User.findByIdAndUpdate(id,{isBlocked:true},{new:true})
+
+  return result
+}
+
+const deleteBlogByAdmin = async (id:string) => {
+
+  const blog = await Blog.findByIdAndDelete(id)
+
+  if(!blog){
+    throw new AppError(httpStatus.NOT_FOUND,"Blog not found")
+  }
+
+  const result = await Blog.findByIdAndUpdate(id)
+  return result
+}
+
+
+
 export const UserServices = {
   registerUser,
   getAllUser,
   loginUser,
-  refreshToken
+  refreshToken,
+  blockUserByAdmin,
+  deleteBlogByAdmin
 };

@@ -18,24 +18,45 @@ const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
 const blog_service_1 = require("./blog.service");
 const createBlogController = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield blog_service_1.BlogServices.createBlog(req.body);
+    const result = yield blog_service_1.BlogServices.createBlog(req.body, req.user);
     (0, sendResponse_1.default)(res, {
-        statusCode: http_status_1.default.OK,
+        statusCode: http_status_1.default.CREATED,
         success: true,
         message: 'Blog is created successfully',
         data: result,
     });
 }));
-const getAllBlogController = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield blog_service_1.BlogServices.getAllBlog();
+const updateOwnBlogController = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const result = yield blog_service_1.BlogServices.updateOwnBlogByUser(id, req.body, req.user);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: 'Blog is retrieved successfully',
+        message: "Blog updated successfully",
+        data: result,
+    });
+}));
+const deleteOwnBlogController = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    yield blog_service_1.BlogServices.deleteOwnBlogByUser(id, req.user);
+    res.status(http_status_1.default.OK).json({
+        success: true,
+        message: "Blog deleted successfully",
+        statusCode: http_status_1.default.OK
+    });
+}));
+const getAllBlogController = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield blog_service_1.BlogServices.getAllBlog(req.query);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: "Blogs fetched successfully",
         data: result,
     });
 }));
 exports.BlogController = {
     createBlogController,
+    updateOwnBlogController,
+    deleteOwnBlogController,
     getAllBlogController
 };

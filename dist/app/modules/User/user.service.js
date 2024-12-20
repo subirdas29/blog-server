@@ -19,6 +19,7 @@ const user_model_1 = require("./user.model");
 const config_1 = __importDefault(require("../../config"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const user_utils_1 = require("./user.utils");
+const blog_model_1 = require("../Blog/blog.model");
 const registerUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield user_model_1.User.create(payload);
     return result;
@@ -55,7 +56,7 @@ const refreshToken = (token) => __awaiter(void 0, void 0, void 0, function* () {
     }
     const decoded = jsonwebtoken_1.default.verify(token, config_1.default.jwt_refresh_secret);
     const { email } = decoded;
-    const user = yield user_model_1.User.findOne({ email });
+    const user = yield user_model_1.User.isUserExist(email);
     if (!user) {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'This user is not found !');
     }
@@ -72,9 +73,30 @@ const refreshToken = (token) => __awaiter(void 0, void 0, void 0, function* () {
         accessToken,
     };
 });
+const blockUserByAdmin = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield user_model_1.User.findById(id);
+    if (!user) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, "User not found!");
+    }
+    if (user.isBlocked === true) {
+        throw new AppError_1.default(http_status_1.default.BAD_REQUEST, "This user is already blocked!");
+    }
+    const result = yield user_model_1.User.findByIdAndUpdate(id, { isBlocked: true }, { new: true });
+    return result;
+});
+const deleteBlogByAdmin = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const blog = yield blog_model_1.Blog.findByIdAndDelete(id);
+    if (!blog) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, "Blog not found");
+    }
+    const result = yield blog_model_1.Blog.findByIdAndUpdate(id);
+    return result;
+});
 exports.UserServices = {
     registerUser,
     getAllUser,
     loginUser,
-    refreshToken
+    refreshToken,
+    blockUserByAdmin,
+    deleteBlogByAdmin
 };

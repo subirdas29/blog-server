@@ -10,6 +10,10 @@ const moduleRoutes = [
         route: user_route_1.UserRoutes,
     },
     {
+        path: '/admin',
+        route: user_route_1.UserRoutes,
+    },
+    {
         path: '/blogs',
         route: blog_route_1.BlogRoutes,
     },

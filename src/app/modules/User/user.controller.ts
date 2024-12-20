@@ -66,9 +66,37 @@ const refreshToken = catchAsync(async(req,res)=>{
     });
 })
 
+const blockUserByAdminController = catchAsync(async (req, res) => {
+
+  const {userId} = req.params
+  
+await UserServices.blockUserByAdmin(userId);
+  res.status(httpStatus.OK).json({
+   success: true,
+   message: "User blocked successfully",
+   statusCode: httpStatus.OK
+   });
+});
+
+
+const deleteBlogByAdminController = catchAsync(async (req, res) => {
+
+  const {id} = req.params
+  
+  await UserServices.deleteBlogByAdmin(id);
+
+  res.status(httpStatus.OK).json({
+  success: true,
+  message: "Blog deleted successfully",
+  statusCode: httpStatus.OK
+  });
+});
+
 export const UserController = {
   registerUserController,
   getAllUserController,
   loginUser,
-  refreshToken
+  refreshToken,
+  blockUserByAdminController,
+  deleteBlogByAdminController
 };

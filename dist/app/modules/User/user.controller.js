@@ -67,9 +67,29 @@ const refreshToken = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, v
         data: result
     });
 }));
+const blockUserByAdminController = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { userId } = req.params;
+    yield user_service_1.UserServices.blockUserByAdmin(userId);
+    res.status(http_status_1.default.OK).json({
+        success: true,
+        message: "User blocked successfully",
+        statusCode: http_status_1.default.OK
+    });
+}));
+const deleteBlogByAdminController = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    yield user_service_1.UserServices.deleteBlogByAdmin(id);
+    res.status(http_status_1.default.OK).json({
+        success: true,
+        message: "Blog deleted successfully",
+        statusCode: http_status_1.default.OK
+    });
+}));
 exports.UserController = {
     registerUserController,
     getAllUserController,
     loginUser,
-    refreshToken
+    refreshToken,
+    blockUserByAdminController,
+    deleteBlogByAdminController
 };
