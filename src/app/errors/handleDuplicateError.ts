@@ -8,11 +8,12 @@ const handleDuplicateError = (err: any): TGenericErrorResponse => {
 
   const errorMessage = match && match[1];
   const statusCode = 400;
-  const error: TErrorSources = 
-    [{
-      details: `${errorMessage} is already exits`,
-    }]
-  
+  const error: TErrorSources = [
+    {
+      path: '',
+      message: `${errorMessage} is already exits`,
+    },
+  ];
 
   return {
     statusCode,

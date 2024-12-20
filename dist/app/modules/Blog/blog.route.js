@@ -10,5 +10,5 @@ const auth_1 = __importDefault(require("../../middlewares/auth"));
 const user_constant_1 = require("../User/user.constant");
 const router = express_1.default.Router();
 router.post('/', blog_controller_1.BlogController.createBlogController);
-router.get('/', (0, auth_1.default)(user_constant_1.USER_ROLES.user), blog_controller_1.BlogController.getAllBlogController);
+router.get('/', (0, auth_1.default)(user_constant_1.USER_ROLES.admin), blog_controller_1.BlogController.getAllBlogController);
 exports.BlogRoutes = router;

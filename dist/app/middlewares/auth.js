@@ -28,13 +28,12 @@ const auth = (...requiredRoles) => {
         }
         const decoded = jsonwebtoken_1.default.verify(token, config_1.default.jwt_access_secret);
         const { email, role } = decoded;
-        console.log(decoded);
         const user = yield user_model_1.User.findOne({ email });
         if (!user) {
             throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'This user is not found !');
         }
         if (requiredRoles && !requiredRoles.includes(role)) {
-            throw new AppError_1.default(http_status_1.default.UNAUTHORIZED, "You are not authorized");
+            throw new AppError_1.default(http_status_1.default.UNAUTHORIZED, "Invalid credentials");
         }
         req.user = decoded;
         next();

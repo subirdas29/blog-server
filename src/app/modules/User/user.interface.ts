@@ -17,7 +17,8 @@ export type TLoginUser ={
 }
 
 export interface UserModel extends Model<TUser>{
-    isThePasswordMatched(plainTextPassword:string,hashPassword:string):Promise<boolean>
+    isThePasswordMatched(plainTextPassword:string,hashPassword:string):Promise<boolean>,
+    isUserExist(id:string):Promise<TUser>,
 }
 
 export type TUserRole = keyof typeof USER_ROLES

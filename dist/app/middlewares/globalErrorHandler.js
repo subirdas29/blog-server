@@ -15,7 +15,8 @@ const globalErrorHandler = (err, req, res, next) => {
     let message = 'Something went wrong!';
     let error = [
         {
-            details: 'Something Went Wrong',
+            path: '',
+            message: 'Something Went Wrong',
         },
     ];
     if (err instanceof zod_1.ZodError) {
@@ -47,7 +48,8 @@ const globalErrorHandler = (err, req, res, next) => {
         message = err === null || err === void 0 ? void 0 : err.message;
         error = [
             {
-                details: err === null || err === void 0 ? void 0 : err.message,
+                path: '',
+                message: err === null || err === void 0 ? void 0 : err.message,
             },
         ];
     }
@@ -55,7 +57,8 @@ const globalErrorHandler = (err, req, res, next) => {
         message = err === null || err === void 0 ? void 0 : err.message;
         error = [
             {
-                details: err === null || err === void 0 ? void 0 : err.message,
+                path: '',
+                message: err === null || err === void 0 ? void 0 : err.message,
             },
         ];
     }
@@ -63,7 +66,7 @@ const globalErrorHandler = (err, req, res, next) => {
         success: false,
         message,
         statusCode,
-        error,
+        error: { details: error },
         stack: config_1.default.NODE_ENV === 'development' ? err === null || err === void 0 ? void 0 : err.stack : null,
     });
 };

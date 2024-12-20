@@ -6,7 +6,7 @@ const handleZodError = (err: ZodError): TGenericErrorResponse => {
   const error: TErrorSources = err.issues.map((issue: ZodIssue) => {
     return {
       path: issue?.path[issue.path.length - 1],
-      details: issue.message,
+      message: issue.message,
     };
   });
   return {

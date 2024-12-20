@@ -6,11 +6,12 @@ const handleCastError = (
 ): TGenericErrorResponse => {
   const statusCode = 400;
 
-  const error: TErrorSources = 
-    [{
-      details: err?.message,
-    }]
-
+  const error: TErrorSources = [
+    {
+      path: err?.path,
+      message: err?.message,
+    },
+  ];
 
   return {
     statusCode,

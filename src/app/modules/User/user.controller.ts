@@ -37,7 +37,7 @@ const getAllUserController = catchAsync(async (req, res) => {
 const loginUser = catchAsync(async(req,res)=>{
   const result = await UserServices.loginUser(req.body)
 
-  const {refreshToken,accessToken} = result
+  const {refreshToken,token} = result
 
   res.cookie('refreshToken',refreshToken,{
       secure:config.NODE_ENV === "production",
@@ -47,9 +47,9 @@ const loginUser = catchAsync(async(req,res)=>{
   sendResponse(res,{
       statusCode:httpStatus.OK,
       success:true,
-      message:"User is logged in successfully",
+      message:"Login successful",
       data:{
-          accessToken
+          token
       }
   })
 })

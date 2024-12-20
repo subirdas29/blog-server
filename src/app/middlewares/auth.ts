@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { NextFunction, Request, Response } from 'express';
 import catchAsync from "../utils/catchAsync"
 import config from "../config"
@@ -24,7 +24,6 @@ const auth= (...requiredRoles:TUserRole[])=>{
         const decoded =jwt.verify(token,config.jwt_access_secret as string) as JwtPayload
 
         const {email,role} = decoded
-        console.log(decoded)
 
         const user = await User.findOne({email})
 
@@ -33,7 +32,7 @@ const auth= (...requiredRoles:TUserRole[])=>{
           }
 
           if(requiredRoles && !requiredRoles.includes(role)){
-            throw new AppError(httpStatus.UNAUTHORIZED,"You are not authorized")
+            throw new AppError(httpStatus.UNAUTHORIZED,"Invalid credentials")
            }
           
 

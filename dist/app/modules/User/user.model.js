@@ -55,6 +55,11 @@ userSchema.post('save', function (doc, next) {
         next();
     });
 });
+userSchema.statics.isUserExist = function (email) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield exports.User.findOne({ email }).select('+password');
+    });
+};
 userSchema.statics.isThePasswordMatched = function (plainTextPassword, hashPassword) {
     return __awaiter(this, void 0, void 0, function* () {
         return yield bcrypt_1.default.compare(plainTextPassword, hashPassword);

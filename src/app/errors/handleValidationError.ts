@@ -7,7 +7,8 @@ const handleValidationError = (
   const error: TErrorSources = Object.values(err.errors).map(
     (val: mongoose.Error.ValidatorError | mongoose.Error.CastError) => {
       return {
-        details: val?.message,
+        path: val?.path,
+        message: val?.message,
       };
     },
   );

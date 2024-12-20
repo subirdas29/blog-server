@@ -28,26 +28,24 @@ const getAllUser = () => __awaiter(void 0, void 0, void 0, function* () {
     return result;
 });
 const loginUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield user_model_1.User.findOne({
-        email: payload === null || payload === void 0 ? void 0 : payload.email,
-    });
+    const user = yield user_model_1.User.isUserExist(payload.email);
     if (!user) {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'This user is not found !');
     }
     if ((user === null || user === void 0 ? void 0 : user.isBlocked) === true) {
         throw new AppError_1.default(http_status_1.default.FORBIDDEN, "This user is Blocked");
     }
-    if (!(user_model_1.User.isThePasswordMatched(payload === null || payload === void 0 ? void 0 : payload.password, user === null || user === void 0 ? void 0 : user.password))) {
+    if (!(yield user_model_1.User.isThePasswordMatched(payload === null || payload === void 0 ? void 0 : payload.password, user === null || user === void 0 ? void 0 : user.password))) {
         throw new AppError_1.default(http_status_1.default.FORBIDDEN, "password do not match");
     }
     const jwtPayload = {
         email: user === null || user === void 0 ? void 0 : user.email,
         role: user === null || user === void 0 ? void 0 : user.role,
     };
-    const accessToken = (0, user_utils_1.createToken)(jwtPayload, config_1.default.jwt_access_secret, config_1.default.jwt_access_expires_in);
+    const token = (0, user_utils_1.createToken)(jwtPayload, config_1.default.jwt_access_secret, config_1.default.jwt_access_expires_in);
     const refreshToken = (0, user_utils_1.createToken)(jwtPayload, config_1.default.jwt_refresh_secret, config_1.default.jwt_refresh_expires_in);
     return {
-        accessToken,
+        token,
         refreshToken,
     };
 });

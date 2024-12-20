@@ -14,8 +14,9 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   let message = 'Something went wrong!';
 
   let error: TErrorSources = [
-    {    
-      details: 'Something Went Wrong',
+    {
+      path: '',
+      message: 'Something Went Wrong',
     },
   ];
 
@@ -52,14 +53,16 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     message = err?.message;
     error = [
       {
-        details: err?.message,
+        path: '',
+        message: err?.message,
       },
     ];
   } else if (err instanceof Error) {
     message = err?.message;
     error = [
       {
-        details: err?.message,
+        path: '',
+        message: err?.message,
       },
     ];
   }
@@ -69,8 +72,7 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     success: false,
     message,
     statusCode,
-    error,
-   
+    error:{details: error},
     stack: config.NODE_ENV === 'development' ? err?.stack : null,
   });
 };

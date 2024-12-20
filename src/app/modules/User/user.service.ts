@@ -18,9 +18,7 @@ const getAllUser = async () => {
 
 const loginUser = async(payload:TLoginUser)=>{
 
-  const user = await User.findOne({
-      email: payload?.email,
-  })
+  const user = await User.isUserExist(payload.email)
 
   if(!user){
       throw new AppError(httpStatus.NOT_FOUND,'This user is not found !')
@@ -30,7 +28,7 @@ const loginUser = async(payload:TLoginUser)=>{
       throw new AppError(httpStatus.FORBIDDEN,"This user is Blocked")
   }
 
-  if(!(User.isThePasswordMatched(payload?.password,user?.password))){
+  if(!(await User.isThePasswordMatched(payload?.password,user?.password))){
       throw new AppError(httpStatus.FORBIDDEN,"password do not match")
   }
 
@@ -39,18 +37,16 @@ const loginUser = async(payload:TLoginUser)=>{
       role:user?.role,
   }
 
-  const accessToken= createToken(jwtPayload,config.jwt_access_secret as string,config.jwt_access_expires_in as string)
+  const token= createToken(jwtPayload,config.jwt_access_secret as string,config.jwt_access_expires_in as string)
   
   const refreshToken= createToken(jwtPayload,config.jwt_refresh_secret as string,config.jwt_refresh_expires_in as string)
   
 
   return {
-      accessToken,
+      token,
       refreshToken,   
   }
-
 }
-
 
 const refreshToken = async(token:string)=>{
   if(!token){
