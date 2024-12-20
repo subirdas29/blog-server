@@ -1,14 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-// import { UserRoutes } from '../modules/User/user.route';
+const user_route_1 = require("../modules/User/user.route");
 const blog_route_1 = require("../modules/Blog/blog.route");
-const auth_route_1 = require("../modules/Auth/auth.route");
 const router = (0, express_1.Router)();
 const moduleRoutes = [
     {
         path: '/auth',
-        route: auth_route_1.AuthRoutes,
+        route: user_route_1.UserRoutes,
     },
     {
         path: '/blogs',

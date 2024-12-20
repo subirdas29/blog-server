@@ -11,6 +11,10 @@ export interface TUser{
   updateAt: Date;
 };
 
+export type TLoginUser ={
+  email : string,
+  password:string,
+}
 
 export interface UserModel extends Model<TUser>{
     isThePasswordMatched(plainTextPassword:string,hashPassword:string):Promise<boolean>

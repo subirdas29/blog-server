@@ -17,13 +17,19 @@ const http_status_1 = __importDefault(require("http-status"));
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
 const user_service_1 = require("./user.service");
-const createUserController = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_service_1.UserServices.createUser(req.body);
+const config_1 = __importDefault(require("../../config"));
+const registerUserController = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_service_1.UserServices.registerUser(req.body);
+    const { _id, name, email } = result;
     (0, sendResponse_1.default)(res, {
-        statusCode: http_status_1.default.OK,
         success: true,
-        message: 'User is created successfully',
-        data: result,
+        message: "User registered successfully",
+        statusCode: http_status_1.default.CREATED,
+        data: {
+            _id,
+            name,
+            email
+        },
     });
 }));
 const getAllUserController = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -35,7 +41,35 @@ const getAllUserController = (0, catchAsync_1.default)((req, res) => __awaiter(v
         data: result,
     });
 }));
+const loginUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_service_1.UserServices.loginUser(req.body);
+    const { refreshToken, accessToken } = result;
+    res.cookie('refreshToken', refreshToken, {
+        secure: config_1.default.NODE_ENV === "production",
+        httpOnly: true
+    });
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: "User is logged in successfully",
+        data: {
+            accessToken
+        }
+    });
+}));
+const refreshToken = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { refreshToken } = req.cookies;
+    const result = yield user_service_1.UserServices.refreshToken(refreshToken);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Access Token is retrieved successfully!',
+        data: result
+    });
+}));
 exports.UserController = {
-    createUserController,
+    registerUserController,
     getAllUserController,
+    loginUser,
+    refreshToken
 };
