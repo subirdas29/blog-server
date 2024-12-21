@@ -4,7 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const zod_1 = require("zod");
-const config_1 = __importDefault(require("../config"));
 const handleZodError_1 = __importDefault(require("../errors/handleZodError"));
 const handleValidationError_1 = __importDefault(require("../errors/handleValidationError"));
 const handleCastError_1 = __importDefault(require("../errors/handleCastError"));
@@ -67,7 +66,7 @@ const globalErrorHandler = (err, req, res, next) => {
         message,
         statusCode,
         error: { details: error },
-        stack: config_1.default.NODE_ENV === 'development' ? err === null || err === void 0 ? void 0 : err.stack : null,
+        stack: err === null || err === void 0 ? void 0 : err.stack
     });
 };
 exports.default = globalErrorHandler;
