@@ -57,8 +57,8 @@ const deleteOwnBlogByUser = (id, token) => __awaiter(void 0, void 0, void 0, fun
     return result;
 });
 const getAllBlog = (query) => __awaiter(void 0, void 0, void 0, function* () {
-    const blogQuery = new QueryBuilder_1.default(blog_model_1.Blog.find().populate('author'), query).search(blog_constant_1.blogSearchFields).sortBy().sortOrder().filter();
-    const result = blogQuery.modelQuery;
+    const blogQuery = new QueryBuilder_1.default(blog_model_1.Blog.find().populate('author'), query).search(blog_constant_1.blogSearchFields).sortBy().filter();
+    const result = yield blogQuery.modelQuery;
     return result;
 });
 exports.BlogServices = {

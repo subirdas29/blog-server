@@ -1,1 +1,1 @@
-export const blogSearchFields = ['title','content','author.name']
+export const blogSearchFields = ['title','content']

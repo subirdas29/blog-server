@@ -59,9 +59,9 @@ const deleteOwnBlogByUser = async(id:string,token:JwtPayload)=>{
 }
 
 const getAllBlog=async(query:Record<string,unknown>)=>{
-  const blogQuery = new QueryBuilder(Blog.find().populate('author'),query).search(blogSearchFields).sortBy().sortOrder().filter()
+  const blogQuery = new QueryBuilder(Blog.find().populate('author'),query).search(blogSearchFields).sortBy().filter()
 
-  const result = blogQuery.modelQuery
+  const result = await blogQuery.modelQuery
   return result
 }
 
